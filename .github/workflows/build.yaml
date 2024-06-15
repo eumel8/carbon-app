@@ -21,18 +21,21 @@ jobs:
           - goarch: arm64
             goos: windows
     steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-go@v3
     - name: install packages
       run: |
-          sudo apt update
-          sudo apt-get -y install bc gcc libgl1-mesa-dev libwayland-dev libx11-dev libxkbcommon-dev xorg-dev xvfb
+          sudo go install github.com/fyne-io/fyne-cross@latest
+          fyne-cross linux -output carbon-app .
+          #sudo apt update
+          #sudo apt-get -y install bc gcc libgl1-mesa-dev libwayland-dev libx11-dev libxkbcommon-dev xorg-dev xvfb
           #sudo apt-get -y install libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev gcc pkg-config libxxf86vm-dev
-    - uses: actions/checkout@v2
-    - uses: wangyoucao577/go-release-action@v1.51
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        goos: ${{ matrix.goos }}
-        goarch: ${{ matrix.goarch }}
-        binary_name: carbon-app
-        retry: 10
-        sha256sum: true
-        pre_command: go mod tidy
+    #- uses: wangyoucao577/go-release-action@v1.51
+    #  with:
+    #    github_token: ${{ secrets.GITHUB_TOKEN }}
+    #    goos: ${{ matrix.goos }}
+    #    goarch: ${{ matrix.goarch }}
+    #    binary_name: carbon-app
+    #    retry: 10
+    #    sha256sum: true
+    #    pre_command: go mod tidy
