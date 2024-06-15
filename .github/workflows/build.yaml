@@ -22,8 +22,8 @@ jobs:
     steps:
     - name: install packages
       run: |
-          apt update
-          apt-get -y install libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev gcc pkg-config libxxf86vm-dev
+          sudo apt update
+          sudo apt-get -y install libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev gcc pkg-config libxxf86vm-dev
     - uses: actions/checkout@v2
     - uses: wangyoucao577/go-release-action@v1.51
       with:
