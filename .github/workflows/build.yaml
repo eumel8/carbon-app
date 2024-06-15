@@ -16,7 +16,8 @@ jobs:
       matrix:
         goos: [linux]
         #goos: [linux, windows, darwin]
-        goarch: [amd64, arm64]
+        goarch: [amd64]
+        #goarch: [amd64, arm64]
         exclude:
           - goarch: arm64
             goos: windows
@@ -25,6 +26,7 @@ jobs:
     - uses: actions/setup-go@v3
     - name: install packages
       run: |
+          go version
           sudo apt update
           sudo apt-get -y install bc gcc libgl1-mesa-dev libwayland-dev libx11-dev libxkbcommon-dev xorg-dev xvfb
           go install github.com/fyne-io/fyne-cross@latest
