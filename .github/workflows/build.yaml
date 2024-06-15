@@ -26,8 +26,8 @@ jobs:
     - name: install packages
       run: |
           go install github.com/fyne-io/fyne-cross@latest
-          export PATH=$PATH:~/go/bin
-          fyne-cross linux -output carbon-app -arch=amd64
+          echo "$HOME/go/bin" >> $GITHUB_PATH
+          fyne-cross linux -output carbon-app -arch=amd64 .
           #sudo apt update
           #sudo apt-get -y install bc gcc libgl1-mesa-dev libwayland-dev libx11-dev libxkbcommon-dev xorg-dev xvfb
           #sudo apt-get -y install libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev gcc pkg-config libxxf86vm-dev
