@@ -27,6 +27,8 @@ jobs:
       run: |
           go install github.com/fyne-io/fyne-cross@latest
           export PATH=$PATH:~/go/bin
+          pwd
+          ls
           echo "$HOME/go/bin" >> $GITHUB_PATH
           fyne-cross linux -output carbon-app -arch=amd64 .
           #sudo apt update
