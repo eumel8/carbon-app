@@ -2,7 +2,7 @@ Website = "https://carbon.gnuu.de"
 
 [Details]
 Icon = "carbon.png"
-Name = "carbon-app"
+Name = "carbonapp"
 ID = "de.gnuu.carbon"
 Version = "1.0.0"
 Build = 1

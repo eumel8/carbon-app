@@ -1,4 +1,4 @@
-module main.go
+module carbonapp
 
 go 1.22.1
 
