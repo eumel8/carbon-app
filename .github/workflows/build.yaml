@@ -34,7 +34,7 @@ jobs:
           pwd
           ls
           echo "$HOME/go/bin" >> $GITHUB_PATH
-          fyne-cross linux -output carbon-app -arch=amd64 .
+          fyne-cross linux -output carbon-app -arch=amd64 -debug .
           #sudo apt update
           #sudo apt-get -y install bc gcc libgl1-mesa-dev libwayland-dev libx11-dev libxkbcommon-dev xorg-dev xvfb
           #sudo apt-get -y install libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev gcc pkg-config libxxf86vm-dev
