@@ -48,6 +48,7 @@ jobs:
       env:
         GHR_PATH: fyne-cross/dist/linux-amd64/
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        GHR_REPLACE: true
     #- uses: wangyoucao577/go-release-action@v1.51
     #  with:
     #    github_token: ${{ secrets.GITHUB_TOKEN }}
