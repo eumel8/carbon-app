@@ -10,22 +10,22 @@ on:
     types: [created]
 
 jobs:
-  release-linux-amd64:
+  fyne-cross-and-release:
     name: release linux/amd64
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        goos: [linux]
-        #goos: [linux, windows, darwin]
-        goarch: [amd64]
-        #goarch: [amd64, arm64]
-        exclude:
-          - goarch: arm64
-            goos: windows
+    #strategy:
+    #  matrix:
+    #    goos: [linux]
+    #    #goos: [linux, windows, darwin]
+    #    goarch: [amd64]
+    #    #goarch: [amd64, arm64]
+    #    exclude:
+    #      - goarch: arm64
+    #        goos: windows
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-go@v3
-    - name: install packages
+    - name: install packages & compile
       run: |
           go version
           sudo apt update
@@ -33,22 +33,30 @@ jobs:
           go install github.com/fyne-io/fyne-cross@latest
           export PATH=$PATH:~/go/bin
           echo "$HOME/go/bin" >> $GITHUB_PATH
-          fyne-cross linux -output carbon-app -arch=amd64 -debug .
+          fyne-cross linux -output carbon-app -arch=amd64,arm64 -debug .
           #sudo apt update
           #sudo apt-get -y install bc gcc libgl1-mesa-dev libwayland-dev libx11-dev libxkbcommon-dev xorg-dev xvfb
           #sudo apt-get -y install libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev gcc pkg-config libxxf86vm-dev
-    #- name: Upload artifacts
-    #  uses: actions/upload-artifact@v4
+    - name: Upload artifacts for linux-amd64
+      uses: actions/upload-artifact@v4
+      with:
+        name: carbonapp-amd64
+        path: fyne-cross/dist/linux-amd64/
+    - name: Upload artifacts for linux-arm64
+      uses: actions/upload-artifact@v4
+      with:
+        name: carbonapp-arm64
+        path: fyne-cross/dist/linux-arm64/
+    #- name: Release linux-amd64
+    #  uses: fnkr/github-action-ghr@v1
+    #  if: startsWith(github.ref, 'refs/tags/')
+    #  env:
+    #    GHR_PATH: fyne-cross/dist/linux-amd64/
+    #    GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+    #    GHR_REPLACE: true
     #  with:
-    #    name: linux-amd64
-    #    path: fyne-cross/dist/linux-amd64/
-    - name: Release
-      uses: fnkr/github-action-ghr@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      env:
-        GHR_PATH: fyne-cross/dist/linux-amd64/
-        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-        GHR_REPLACE: true
+    #    arch:
+    #      - linux-amd64
     #- uses: wangyoucao577/go-release-action@v1.51
     #  with:
     #    github_token: ${{ secrets.GITHUB_TOKEN }}
