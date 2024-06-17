@@ -11,7 +11,7 @@ on:
 
 jobs:
   fyne-cross-and-release:
-    name: release linux/amd64
+    name: build and release 
     runs-on: ubuntu-latest
     #strategy:
     #  matrix:
@@ -36,7 +36,7 @@ jobs:
     - name: compile
       run: |
           export PATH=$PATH:~/go/bin
-          fyne-cross linux -output carbon-app -arch=amd64,arm64 -debug .
+          fyne-cross linux -output carbonapp -arch=amd64,arm64 -debug .
           ls -lR fyne-cross
     - name: rename
       run: |
