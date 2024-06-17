@@ -30,8 +30,8 @@ jobs:
           ls -lR fyne-cross
     - name: package
       run: |
-          cd fyne-cross/bin/linux-arm64/; tar cvfz carbonapp-arm64.tgz carbonapp; cd ..
-          cd fyne-cross/bin/linux-amd64/; tar cvfz carbonapp-amd64.tgz carbonapp; cd ..
+          cd fyne-cross/bin/linux-arm64/; tar cvfz carbonapp-arm64.tgz carbonapp; cd ../../..
+          cd fyne-cross/bin/linux-amd64/; tar cvfz carbonapp-amd64.tgz carbonapp; cd ../../..
           #sudo apt update
           #sudo apt-get -y install bc gcc libgl1-mesa-dev libwayland-dev libx11-dev libxkbcommon-dev xorg-dev xvfb
           #sudo apt-get -y install libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev gcc pkg-config libxxf86vm-dev
