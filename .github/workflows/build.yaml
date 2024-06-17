@@ -1,4 +1,5 @@
 # https://github.com/marketplace/actions/go-release-binaries
+name: build app
 on:
   push:
     branches:
@@ -31,13 +32,16 @@ jobs:
           sudo apt-get -y install bc gcc libgl1-mesa-dev libwayland-dev libx11-dev libxkbcommon-dev xorg-dev xvfb
           go install github.com/fyne-io/fyne-cross@latest
           export PATH=$PATH:~/go/bin
-          pwd
-          ls
           echo "$HOME/go/bin" >> $GITHUB_PATH
           fyne-cross linux -output carbon-app -arch=amd64 -debug .
           #sudo apt update
           #sudo apt-get -y install bc gcc libgl1-mesa-dev libwayland-dev libx11-dev libxkbcommon-dev xorg-dev xvfb
           #sudo apt-get -y install libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev gcc pkg-config libxxf86vm-dev
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-amd64
+        path: fyne-cross/dist/linux-amd64/
     #- uses: wangyoucao577/go-release-action@v1.51
     #  with:
     #    github_token: ${{ secrets.GITHUB_TOKEN }}
