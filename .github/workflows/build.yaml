@@ -30,8 +30,8 @@ jobs:
           ls -lR fyne-cross
     - name: rename
       run: |
-          mv fyne-cross/dist/linux-arm64/carbonapp.tar.xz fyne-cross/dist/linux-arm64/carbonapp-arm64.tar.xz
-          mv fyne-cross/dist/linux-amd64/carbonapp.tar.xz fyne-cross/dist/linux-amd64/carbonapp-amd64.tar.xz
+          mv fyne-cross/bin/linux-arm64/carbonapp.tar.xz fyne-cross/bin/linux-arm64/carbonapp-arm64.tar.xz
+          mv fyne-cross/bin/linux-amd64/carbonapp.tar.xz fyne-cross/bin/linux-amd64/carbonapp-amd64.tar.xz
           #sudo apt update
           #sudo apt-get -y install bc gcc libgl1-mesa-dev libwayland-dev libx11-dev libxkbcommon-dev xorg-dev xvfb
           #sudo apt-get -y install libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev gcc pkg-config libxxf86vm-dev
@@ -55,17 +55,17 @@ jobs:
     #  with:
     #    name: carbonapp-arm64
     #    path: fyne-cross/dist/linux-arm64/
-    - name: Release dist linux-amd64
+    - name: Release linux-amd64
       uses: fnkr/github-action-ghr@v1
       if: startsWith(github.ref, 'refs/tags/')
       env:
-        GHR_PATH: fyne-cross/dist/linux-amd64/carbonapp-amd64.tar.xz
+        GHR_PATH: fyne-cross/bin/linux-amd64/carbonapp-amd64.tar.xz
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         GHR_REPLACE: true
-    - name: Release dist linux-arm64
+    - name: Release linux-arm64
       uses: fnkr/github-action-ghr@v1
       if: startsWith(github.ref, 'refs/tags/')
       env:
-        GHR_PATH: fyne-cross/dist/linux-arm64/carbonapp-arm64.tar.xz
+        GHR_PATH: fyne-cross/bin/linux-arm64/carbonapp-arm64.tar.xz
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         GHR_REPLACE: true
