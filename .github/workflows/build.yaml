@@ -32,16 +32,26 @@ jobs:
           sudo apt-get -y install bc gcc libgl1-mesa-dev libwayland-dev libx11-dev libxkbcommon-dev xorg-dev xvfb
           go install github.com/fyne-io/fyne-cross@latest
           go install github.com/tcnksm/ghr@latest
-          export PATH=$PATH:~/go/bin
           #echo "$HOME/go/bin" >> $GITHUB_PATH
     - name: compile
       run: |
+          export PATH=$PATH:~/go/bin
           fyne-cross linux -output carbon-app -arch=amd64,arm64 -debug .
           mv fyne-cross/dist/linux-arm64/carbonapp-arm64.tar.xz
           mv fyne-cross/dist/linux-amd64/carbonapp-amd64.tar.xz
           #sudo apt update
           #sudo apt-get -y install bc gcc libgl1-mesa-dev libwayland-dev libx11-dev libxkbcommon-dev xorg-dev xvfb
           #sudo apt-get -y install libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev gcc pkg-config libxxf86vm-dev
+    - name: release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false 
     #- name: Upload artifacts for linux-amd64
     #  uses: actions/upload-artifact@v4
     #  with:
