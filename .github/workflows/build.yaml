@@ -37,6 +37,9 @@ jobs:
       run: |
           export PATH=$PATH:~/go/bin
           fyne-cross linux -output carbon-app -arch=amd64,arm64 -debug .
+          ls -lR fyne-cross
+    - name: rename
+      run: |
           mv fyne-cross/dist/linux-arm64/carbonapp.tar.xz fyne-cross/dist/linux-arm64/carbonapp-arm64.tar.xz
           mv fyne-cross/dist/linux-amd64/carbonapp.tar.xz fyne-cross/dist/linux-amd64/carbonapp-amd64.tar.xz
           #sudo apt update
