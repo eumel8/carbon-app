@@ -2,12 +2,12 @@
 name: Build carbonapp
 on:
   push:
-    branches:
-      - main
     tags:        
       - '*'
-  release:
-    types: [created]
+    #branches:
+    #  - main
+  #release:
+  #  types: [created]
 
 jobs:
   fyne-cross-and-release:
