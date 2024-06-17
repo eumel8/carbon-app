@@ -37,8 +37,8 @@ jobs:
       run: |
           export PATH=$PATH:~/go/bin
           fyne-cross linux -output carbon-app -arch=amd64,arm64 -debug .
-          mv fyne-cross/dist/linux-arm64/carbonapp-arm64.tar.xz
-          mv fyne-cross/dist/linux-amd64/carbonapp-amd64.tar.xz
+          mv fyne-cross/dist/linux-arm64/carbonapp.tar.xz fyne-cross/dist/linux-arm64/carbonapp-arm64.tar.xz
+          mv fyne-cross/dist/linux-amd64/carbonapp.tar.xz fyne-cross/dist/linux-amd64/carbonapp-amd64.tar.xz
           #sudo apt update
           #sudo apt-get -y install bc gcc libgl1-mesa-dev libwayland-dev libx11-dev libxkbcommon-dev xorg-dev xvfb
           #sudo apt-get -y install libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev gcc pkg-config libxxf86vm-dev
