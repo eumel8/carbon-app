@@ -28,10 +28,10 @@ jobs:
           export PATH=$PATH:~/go/bin
           fyne-cross linux -output carbonapp -arch=amd64,arm64 -debug .
           ls -lR fyne-cross
-    - name: rename
+    - name: package
       run: |
-          mv fyne-cross/bin/linux-arm64/carbonapp.tar.xz fyne-cross/bin/linux-arm64/carbonapp-arm64.tar.xz
-          mv fyne-cross/bin/linux-amd64/carbonapp.tar.xz fyne-cross/bin/linux-amd64/carbonapp-amd64.tar.xz
+          cd fyne-cross/bin/linux-arm64/; tar cvfz carbonapp-arm64.tgz carbonapp; cd ..
+          cd fyne-cross/bin/linux-amd64/; tar cvfz carbonapp-amd64.tgz carbonapp; cd ..
           #sudo apt update
           #sudo apt-get -y install bc gcc libgl1-mesa-dev libwayland-dev libx11-dev libxkbcommon-dev xorg-dev xvfb
           #sudo apt-get -y install libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev gcc pkg-config libxxf86vm-dev
@@ -59,13 +59,13 @@ jobs:
       uses: fnkr/github-action-ghr@v1
       if: startsWith(github.ref, 'refs/tags/')
       env:
-        GHR_PATH: fyne-cross/bin/linux-amd64/carbonapp-amd64.tar.xz
+        GHR_PATH: fyne-cross/bin/linux-amd64/carbonapp-amd64.tgz
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         GHR_REPLACE: true
     - name: Release linux-arm64
       uses: fnkr/github-action-ghr@v1
       if: startsWith(github.ref, 'refs/tags/')
       env:
-        GHR_PATH: fyne-cross/bin/linux-arm64/carbonapp-arm64.tar.xz
+        GHR_PATH: fyne-cross/bin/linux-arm64/carbonapp-arm64.tgz
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         GHR_REPLACE: true
