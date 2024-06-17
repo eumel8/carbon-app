@@ -1,5 +1,5 @@
 # https://github.com/marketplace/actions/go-release-binaries
-name: build app
+name: Build carbonapp
 on:
   push:
     branches:
@@ -37,26 +37,30 @@ jobs:
           #sudo apt update
           #sudo apt-get -y install bc gcc libgl1-mesa-dev libwayland-dev libx11-dev libxkbcommon-dev xorg-dev xvfb
           #sudo apt-get -y install libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev gcc pkg-config libxxf86vm-dev
-    - name: Upload artifacts for linux-amd64
-      uses: actions/upload-artifact@v4
-      with:
-        name: carbonapp-amd64
-        path: fyne-cross/dist/linux-amd64/
-    - name: Upload artifacts for linux-arm64
-      uses: actions/upload-artifact@v4
-      with:
-        name: carbonapp-arm64
-        path: fyne-cross/dist/linux-arm64/
-    #- name: Release linux-amd64
-    #  uses: fnkr/github-action-ghr@v1
-    #  if: startsWith(github.ref, 'refs/tags/')
-    #  env:
-    #    GHR_PATH: fyne-cross/dist/linux-amd64/
-    #    GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-    #    GHR_REPLACE: true
+    #- name: Upload artifacts for linux-amd64
+    #  uses: actions/upload-artifact@v4
     #  with:
-    #    arch:
-    #      - linux-amd64
+    #    name: carbonapp-amd64
+    #    path: fyne-cross/dist/linux-amd64/
+    #- name: Upload artifacts for linux-arm64
+    #  uses: actions/upload-artifact@v4
+    #  with:
+    #    name: carbonapp-arm64
+    #    path: fyne-cross/dist/linux-arm64/
+    - name: Release linux-amd64
+      uses: fnkr/github-action-ghr@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      env:
+        GHR_PATH: fyne-cross/dist/linux-amd64/
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        GHR_REPLACE: true
+    - name: Release linux-arm64
+      uses: fnkr/github-action-ghr@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      env:
+        GHR_PATH: fyne-cross/dist/linux-arm64/
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        GHR_REPLACE: true
     #- uses: wangyoucao577/go-release-action@v1.51
     #  with:
     #    github_token: ${{ secrets.GITHUB_TOKEN }}
