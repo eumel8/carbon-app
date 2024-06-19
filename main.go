@@ -139,6 +139,7 @@ func main() {
 	}
 	carbonApp := app.New()
 	carbonWindow := carbonApp.NewWindow("Carbon-App")
+	carbonWindow.SetFullScreen(true)
 
 	mainLabel := canvas.NewText("Show the current carbon emission", color.White)
 	mainContent := container.NewVBox(mainLabel)
@@ -157,7 +158,7 @@ func main() {
 			timeLabel.Alignment = fyne.TextAlignCenter
 			carbonLabel := canvas.NewText(fmt.Sprintf("%d ", carbonMetric), color.Black)
 			carbonLabel.TextStyle.Bold = true
-			carbonLabel.TextSize = 50
+			carbonLabel.TextSize = 72
 			carbonLabel.Alignment = fyne.TextAlignCenter
 			content := container.NewVBox(timeLabel, carbonLabel)
 			carbonLabel.Refresh()
