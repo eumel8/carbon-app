@@ -26,11 +26,12 @@ jobs:
     - name: compile
       run: |
           export PATH=$PATH:~/go/bin
-          fyne-cross linux -output carbonapp -arch=amd64,arm64 -debug .
+          fyne-cross linux -output carbonapp -arch=amd64,arm64,arm -debug .
           ls -lR fyne-cross
     - name: package
       run: |
           cd fyne-cross/bin/linux-arm64/; tar cvfz carbonapp-arm64.tgz carbonapp; cd ../../..
+          cd fyne-cross/bin/linux-arm/; tar cvfz carbonapp-arm.tgz carbonapp; cd ../../..
           cd fyne-cross/bin/linux-amd64/; tar cvfz carbonapp-amd64.tgz carbonapp; cd ../../..
           #sudo apt update
           #sudo apt-get -y install bc gcc libgl1-mesa-dev libwayland-dev libx11-dev libxkbcommon-dev xorg-dev xvfb
@@ -47,5 +48,12 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       env:
         GHR_PATH: fyne-cross/bin/linux-arm64/carbonapp-arm64.tgz
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        GHR_REPLACE: true
+    - name: Release linux-arm
+      uses: fnkr/github-action-ghr@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      env:
+        GHR_PATH: fyne-cross/bin/linux-arm/carbonapp-arm.tgz
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         GHR_REPLACE: true
