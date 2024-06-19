@@ -158,7 +158,7 @@ func main() {
 			timeLabel.Alignment = fyne.TextAlignCenter
 			carbonLabel := canvas.NewText(fmt.Sprintf("%d ", carbonMetric), color.Black)
 			carbonLabel.TextStyle.Bold = true
-			carbonLabel.TextSize = 72
+			carbonLabel.TextSize = 96
 			carbonLabel.Alignment = fyne.TextAlignCenter
 			content := container.NewVBox(timeLabel, carbonLabel)
 			carbonLabel.Refresh()
