@@ -18,7 +18,16 @@ import (
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/theme"
-	// "fyne.io/fyne/v2/widget"
+)
+
+const (
+	defaultPullTime = 60
+	nightStart      = 21
+	nightEnd        = 6
+	labelTextSize   = 120 // or 96
+	ecoMetricLow    = 40
+	ecoMetricHigh   = 80
+	modeFullScreen  = true
 )
 
 type Config struct {
@@ -31,10 +40,16 @@ type myTheme struct{}
 
 var _ fyne.Theme = (*myTheme)(nil)
 
+// collect display size to set font size
+// "github.com/kbinani/screenshot"
+// bounds := screenshot.GetDisplayBounds(0)
+// screenWidth := bounds.Dx()
+// screenHeight := bounds.Dy()
+
 func GetConfig() (Config, error) {
 	pullTime, err := strconv.Atoi(os.Getenv("PULL_DURATION"))
 	if err != nil {
-		pullTime = 60
+		pullTime = defaultPullTime
 	}
 	return Config{
 		prometheusURL: os.Getenv("PROMETHEUS_URL"),
@@ -70,7 +85,6 @@ func (m myTheme) Icon(name fyne.ThemeIconName) fyne.Resource {
 }
 
 func (c *Config) GetCarbonMetric() (int, error) {
-
 	if c.prometheusURL == "" {
 		return 0, fmt.Errorf("PROMETHEUS_URL environment variable is not set")
 	}
@@ -113,7 +127,8 @@ func (c *Config) GetCarbonMetric() (int, error) {
 
 func (c *Config) CarbonColor() (color.Color, error) {
 
-	carbonColor := color.RGBA{0, 255, 0, 255}
+	// default color grey
+	carbonColor := color.RGBA{125, 125, 125, 255}
 	carbonMetric, err := c.GetCarbonMetric()
 
 	if err != nil {
@@ -121,34 +136,64 @@ func (c *Config) CarbonColor() (color.Color, error) {
 		return color.RGBA{}, err
 	}
 
-	if carbonMetric <= 40 {
-		carbonColor = color.RGBA{255, 0, 0, 255}
-	} else if carbonMetric > 40 && carbonMetric <= 80 {
-		carbonColor = color.RGBA{255, 255, 0, 255}
+	if carbonMetric <= ecoMetricLow && carbonMetric > 0 {
+		if isNight() {
+			// dark red/brown
+			carbonColor = color.RGBA{140, 0, 0, 255}
+		} else {
+			// red
+			carbonColor = color.RGBA{255, 0, 0, 255}
+		}
+	} else if carbonMetric > ecoMetricLow && carbonMetric <= ecoMetricHigh {
+		if isNight() {
+			// dark yellow
+			carbonColor = color.RGBA{175, 175, 0, 200}
+		} else {
+			// light yellow
+			carbonColor = color.RGBA{255, 255, 0, 255}
+		}
+	} else {
+		if isNight() {
+			// dark green
+			carbonColor = color.RGBA{0, 190, 0, 255}
+		} else {
+			// light green
+			carbonColor = color.RGBA{0, 255, 0, 255}
+		}
 	}
-
 	return carbonColor, nil
 }
 
-func main() {
+// find out if it is night to dim the display
+func isNight() bool {
+	now := time.Now()
+	hour := now.Hour()
+	return hour >= nightStart || hour < nightEnd
+}
 
+func main() {
 	c, err := GetConfig()
 	if err != nil {
 		fmt.Printf("Error reading config: %v\n", err)
 		return
 	}
+	iconResource, err := fyne.LoadResourceFromPath("icon.png")
+	if err != nil {
+		fmt.Printf("Failed to load icon", err)
+		return
+	}
+
 	carbonApp := app.New()
+	carbonApp.SetIcon(iconResource)
 	carbonWindow := carbonApp.NewWindow("Carbon-App")
-	carbonWindow.SetFullScreen(true)
+	carbonWindow.SetFullScreen(modeFullScreen)
 
 	mainLabel := canvas.NewText("Show the current carbon emission", color.White)
 	mainContent := container.NewVBox(mainLabel)
 
 	go func() {
 		for {
-			time.Sleep(c.pullPeriod)
 			carbonApp.Settings().SetTheme(&myTheme{})
-
 			carbonMetric, err := c.GetCarbonMetric()
 			if err != nil {
 				fmt.Printf("Error querying Prometheus: %v\n", err)
@@ -158,12 +203,11 @@ func main() {
 			timeLabel.Alignment = fyne.TextAlignCenter
 			carbonLabel := canvas.NewText(fmt.Sprintf("%d ", carbonMetric), color.Black)
 			carbonLabel.TextStyle.Bold = true
-			carbonLabel.TextSize = 96
+			carbonLabel.TextSize = labelTextSize
 			carbonLabel.Alignment = fyne.TextAlignCenter
 			content := container.NewVBox(timeLabel, carbonLabel)
 			carbonLabel.Refresh()
 			timeLabel.Refresh()
-
 			carbonWindow.SetContent(content)
 			carbonWindow.Canvas().Refresh(content)
 			carbonWindow.Canvas().SetOnTypedKey(func(keyEvent *fyne.KeyEvent) {
@@ -171,6 +215,7 @@ func main() {
 					carbonApp.Quit()
 				}
 			})
+			time.Sleep(c.pullPeriod)
 		}
 	}()
 	carbonWindow.SetContent(mainContent)
