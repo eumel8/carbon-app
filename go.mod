@@ -1,6 +1,6 @@
 module carbonapp
 
-go 1.22.1
+go 1.23.1
 
 require (
 	fyne.io/fyne/v2 v2.4.5
