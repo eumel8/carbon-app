@@ -177,7 +177,7 @@ func main() {
 		fmt.Printf("Error reading config: %v\n", err)
 		return
 	}
-	iconResource, err := fyne.LoadResourceFromPath("icon.png")
+	iconResource, err := fyne.LoadResourceFromURLString("https://raw.githubusercontent.com/eumel8/carbon-app/main/icon.png")
 	if err != nil {
 		fmt.Printf("Failed to load icon", err)
 		return
