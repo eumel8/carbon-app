@@ -193,27 +193,29 @@ func main() {
 
 	go func() {
 		for {
-			carbonApp.Settings().SetTheme(&myTheme{})
 			carbonMetric, err := c.GetCarbonMetric()
 			if err != nil {
 				fmt.Printf("Error querying Prometheus: %v\n", err)
 			}
 			currentTime := time.Now().Format("02.01.2006 15:04:05")
-			timeLabel := canvas.NewText(currentTime, color.Gray{})
-			timeLabel.Alignment = fyne.TextAlignCenter
-			carbonLabel := canvas.NewText(fmt.Sprintf("%d ", carbonMetric), color.Black)
-			carbonLabel.TextStyle.Bold = true
-			carbonLabel.TextSize = labelTextSize
-			carbonLabel.Alignment = fyne.TextAlignCenter
-			content := container.NewVBox(timeLabel, carbonLabel)
-			carbonLabel.Refresh()
-			timeLabel.Refresh()
-			carbonWindow.SetContent(content)
-			carbonWindow.Canvas().Refresh(content)
-			carbonWindow.Canvas().SetOnTypedKey(func(keyEvent *fyne.KeyEvent) {
-				if keyEvent.Name == fyne.KeyEscape {
-					carbonApp.Quit()
-				}
+			fyne.Do(func() {
+				carbonApp.Settings().SetTheme(&myTheme{})
+				timeLabel := canvas.NewText(currentTime, color.Gray{})
+				timeLabel.Alignment = fyne.TextAlignCenter
+				carbonLabel := canvas.NewText(fmt.Sprintf("%d ", carbonMetric), color.Black)
+				carbonLabel.TextStyle.Bold = true
+				carbonLabel.TextSize = labelTextSize
+				carbonLabel.Alignment = fyne.TextAlignCenter
+				content := container.NewVBox(timeLabel, carbonLabel)
+				carbonLabel.Refresh()
+				timeLabel.Refresh()
+				carbonWindow.SetContent(content)
+				carbonWindow.Canvas().Refresh(content)
+				carbonWindow.Canvas().SetOnTypedKey(func(keyEvent *fyne.KeyEvent) {
+					if keyEvent.Name == fyne.KeyEscape {
+						carbonApp.Quit()
+					}
+				})
 			})
 			time.Sleep(c.pullPeriod)
 		}
