@@ -1,5 +1,10 @@
 # https://github.com/marketplace/actions/go-release-binaries
 name: Build carbonapp
+permissions:
+  attestations: write
+  contents: read
+  id-token: write
+  packages: write
 on:
   push:
     tags:        
