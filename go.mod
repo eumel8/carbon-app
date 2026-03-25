@@ -1,11 +1,11 @@
 module carbonapp
 
-go 1.23.1
+go 1.24.0
 
 require (
 	fyne.io/fyne/v2 v2.7.3
 	github.com/prometheus/client_golang v1.23.2
-	github.com/prometheus/common v0.66.1
+	github.com/prometheus/common v0.67.5
 )
 
 require (
@@ -40,11 +40,11 @@ require (
 	github.com/srwiley/rasterx v0.0.0-20220730225603-2ab79fcdd4ef // indirect
 	github.com/stretchr/testify v1.11.1 // indirect
 	github.com/yuin/goldmark v1.7.8 // indirect
-	go.yaml.in/yaml/v2 v2.4.2 // indirect
+	go.yaml.in/yaml/v2 v2.4.3 // indirect
 	golang.org/x/image v0.24.0 // indirect
-	golang.org/x/net v0.43.0 // indirect
-	golang.org/x/sys v0.35.0 // indirect
-	golang.org/x/text v0.28.0 // indirect
-	google.golang.org/protobuf v1.36.8 // indirect
+	golang.org/x/net v0.48.0 // indirect
+	golang.org/x/sys v0.39.0 // indirect
+	golang.org/x/text v0.32.0 // indirect
+	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
