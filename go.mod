@@ -1,6 +1,6 @@
 module carbonapp
 
-go 1.24.0
+go 1.25.0
 
 require (
 	fyne.io/fyne/v2 v2.7.3
@@ -41,10 +41,10 @@ require (
 	github.com/stretchr/testify v1.11.1 // indirect
 	github.com/yuin/goldmark v1.7.8 // indirect
 	go.yaml.in/yaml/v2 v2.4.3 // indirect
-	golang.org/x/image v0.24.0 // indirect
+	golang.org/x/image v0.38.0 // indirect
 	golang.org/x/net v0.48.0 // indirect
 	golang.org/x/sys v0.39.0 // indirect
-	golang.org/x/text v0.32.0 // indirect
+	golang.org/x/text v0.35.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
