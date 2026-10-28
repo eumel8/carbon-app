@@ -31,7 +31,7 @@ jobs:
     - name: compile
       run: |
           export PATH=$PATH:~/go/bin
-          fyne-cross linux -output carbonapp -arch=amd64,arm64,arm -debug .
+          fyne-cross linux -output carbonapp -arch=amd64,arm64,arm -debug -env GOTOOLCHAIN=go1.27.3 .
           ls -lR fyne-cross
     - name: package
       run: |
