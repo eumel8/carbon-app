@@ -11,12 +11,16 @@ on:
       - '*'
     #branches:
     #  - main
+  pull_request:
+    branches:
+      - main
   #release:
   #  types: [created]
 
 jobs:
   fyne-cross-and-release:
     name: build and release 
+    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -62,3 +66,21 @@ jobs:
         GHR_PATH: fyne-cross/bin/linux-arm/carbonapp-arm.tgz
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         GHR_REPLACE: true
+
+  pr-build:
+    name: build (PR check)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-go@v6
+      with:
+        go-version-file: go.mod
+    - name: install packages
+      run: |
+          sudo apt update
+          sudo apt-get -y install pkg-config libgl1-mesa-dev libx11-dev libxrandr-dev libxxf86vm-dev libxi-dev libxcursor-dev libxinerama-dev libgles2-mesa-dev libwayland-dev libxkbcommon-dev libdecor-0-dev
+    - name: go vet
+      run: go vet ./...
+    - name: build
+      run: go build -o /tmp/carbonapp .
