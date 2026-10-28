@@ -101,7 +101,7 @@ func (c *Config) GetCarbonMetric() (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	result, _, err := v1api.Query(ctx, c.metricName, time.Now())
+	result, _, _, err := v1api.Query(ctx, c.metricName, time.Now())
 	if err != nil {
 		fmt.Printf("Error querying Prometheus: %v\n", err)
 		return 0, err
