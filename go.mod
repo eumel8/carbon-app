@@ -3,7 +3,7 @@ module carbonapp
 go 1.27.3
 
 require (
-	fyne.io/fyne/v2 v2.8.2
+	fyne.io/fyne/v2 v2.8.3
 	github.com/prometheus/client_golang v1.25.0
 	github.com/prometheus/common v0.73.1
 )
